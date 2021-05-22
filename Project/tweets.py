@@ -61,9 +61,7 @@ def add_sentiment():
 
 def create_maps(tweet_df): ##* Pass the processed df with the sentiments
     ## TODO: Top 10 tweets
-    ## TODO: Location
     ## TODO: Date Vs Sentiment
     ## TODO: Overall sentiment
     ## TODO: Geo Location
-
     pass
