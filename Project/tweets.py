@@ -8,6 +8,7 @@ import sys
 import os
 from os.path import join, dirname, realpath
 from wordcloud import WordCloud,STOPWORDS
+from bert import evaluate
 
 def limit_handler(cursor):
     while True:
@@ -55,8 +56,16 @@ def word_cloud(tweet_df):   ##! Problem
 def data_preprocess():
     ##* Remove emojis,special char etc.
     pass
-
-def add_sentiment():
+# assuming that this function only receives an array of product reviews
+def add_sentiment(tweets):
+    stats = evaluate(tweets)
+    '''
+    index 0: negative
+    index 1: neutral
+    index 2: positive
+    
+    find the max value and the corresponing index indicates the sentimant
+    '''
     pass
 
 def create_maps(tweet_df): ##* Pass the processed df with the sentiments
