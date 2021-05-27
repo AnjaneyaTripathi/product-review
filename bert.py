@@ -11,7 +11,10 @@ import shutil
 def load_model():
     task='sentiment'
     MODEL = f"cardiffnlp/twitter-roberta-base-{task}"
-    shutil.rmtree('./cardiffnlp')
+    try:
+        shutil.rmtree('./cardiffnlp')
+    except:
+        print('Working directory is clean.')
     tokenizer = AutoTokenizer.from_pretrained('cardiffnlp/twitter-roberta-base-sentiment', from_tf = True)
     model = AutoModelForSequenceClassification.from_pretrained(MODEL)
     model.save_pretrained(MODEL)
@@ -27,13 +30,16 @@ def preprocess(text):
     return " ".join(new_text)
 
 def evaluate(text):
-    text = preprocess(text)
+    result = [0,0,0]
     tokenizer, model = load_model()
-    encoded_input = tokenizer(text, return_tensors='pt')
-    output = model(**encoded_input)
-    scores = output[0][0].detach().numpy()
-    scores = softmax(scores)
-    print(scores)
-    return scores
-
-
+    for i in range(len(text)):
+        text[i] = preprocess(text[i])
+        encoded_input = tokenizer(text[i], return_tensors='pt')
+        output = model(**encoded_input)
+        scores = output[0][0].detach().numpy()
+        scores = softmax(scores)
+        res = np.argmax(scores)
+        print(res)
+        result[res] += 1
+        print(scores)
+    return result
