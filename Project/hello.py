@@ -24,5 +24,6 @@ def get_tweets():
         query = request.form['key']
         tweet_list =  QueryTwitter(query)
         tweet_df = convert_df(tweet_list)
+        return render_template('dashboard.html',  tables=[tweet_df.to_html(classes='data', header="true")])
         path = word_cloud(tweet_df)
-    return path
+    
