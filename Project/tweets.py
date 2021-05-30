@@ -32,9 +32,15 @@ def QueryTwitter(search_string):
     api = tweepy.API(auth,wait_on_rate_limit=True)
 
     tweet_list = []
-    for tweet in limit_handler(tweepy.Cursor(api.search,q=search_string).items(10)):
-        tweet_list.append(tweet)
-    return tweet_list
+	tweetext=[]
+	for tweet in limit_handled(tweepy.Cursor(api.search,q=search_string).items(20)):
+		tweet_list.append(tweet)
+
+	
+	newlist = sorted(tweet_list, key=lambda x: x.retweet_count, reverse=True)
+	for x in newlist:
+		tweetext.append(x.text)
+	return str(tweetext[:5])
 
 def convert_df(tweet_list):
     id_list = [tweet.id for tweet in tweet_list]
