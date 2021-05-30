@@ -40,7 +40,7 @@ def QueryTwitter(search_string):
 	newlist = sorted(tweet_list, key=lambda x: x.retweet_count, reverse=True)
 	for x in newlist:
 		tweetext.append(x.text)
-	return str(tweetext[:5])
+	return newlist[:10]
 
 def convert_df(tweet_list):
     id_list = [tweet.id for tweet in tweet_list]
