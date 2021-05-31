@@ -1,11 +1,11 @@
 # Scripts\activate 
 # flask run
 
-from tweets import convert_df
+from tweets import add_sentiment, convert_df
 from flask import Flask
 from flask import request
 from flask import render_template
-from tweets import QueryTwitter,convert_df,word_cloud
+from tweets import QueryTwitter,convert_df,word_cloud,add_sentiment
 
 app = Flask(__name__)
 
@@ -22,7 +22,10 @@ def first_page():
 def get_tweets():
     if request.method=='POST':
         query = request.form['key']
-        tweet_list =  QueryTwitter(query)
+        tweet_list,nlp_list =  QueryTwitter(query)
         tweet_df = convert_df(tweet_list)
-        path = word_cloud(tweet_df)
-    return path
+        tweet_df = tweet_df.drop(['id','len','likes'],axis=1)
+        stats = add_sentiment(nlp_list)
+    #return render_template('dashboard.html',  tables=[tweet_df.to_html(classes='data steelBlueCols', header="true")])
+    #path = word_cloud(tweet_df)
+    return stats
