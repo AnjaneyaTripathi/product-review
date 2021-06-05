@@ -9,6 +9,12 @@ Initial approaches involved CNNs and LSTMs, but they were insufficient and didn'
 ### Useful Insights
 
 In addition to the review classification, we have also added functionalities such as 
- <ol><li>word clouds to determmine the most important features that have been stressed on by consumers.</li><li>Piechart which show the sentiment distribution</li><li>Tweets from all over the world translated to Engilsh for ease</li><li>Map depicting distribution of users of the product</li><li>TimeStamp vs Sentiment</li></ol>
+ <ol><li>word clouds to determmine the most important features that have been stressed on by consumers.</li><li>Piechart which show the sentiment distribution</li><li>Tweets from all over the world translated to Engilsh for ease</li><li>Map depicting distribution of users of the product</li></ol>
+ 
+### Output
+
+https://user-images.githubusercontent.com/68152189/120896833-d80efe80-c640-11eb-9b0f-021009a3fec5.mp4
+
+
 
 ***
