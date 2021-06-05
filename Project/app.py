@@ -8,7 +8,7 @@ from flask_session import Session
 from flask import request
 from flask import render_template
 import pandas as pd
-from tweets import QueryTwitter,convert_df,add_sentiment,geo_map
+from tweets import QueryTwitter,convert_df,word_cloud,add_sentiment,geo_map
 
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
@@ -37,7 +37,7 @@ def get_tweets():
 @app.route('/retweets')
 def get_retweets():
     tweet_df = pd.read_csv('tweets_df.csv')
-    tweet_df = tweet_df.drop(['id','len','likes'],axis=1)
+    tweet_df = tweet_df.drop(['id','len'],axis=1)
     tweet_df = tweet_df[:10]
     return render_template('retweet.html',  tables=[tweet_df.to_html(classes='data steelBlueCols', header="true")])
 
@@ -51,15 +51,25 @@ def get_sentiment():
     labels = ["Negative","Neutral","Positive"]
     return render_template('sentiment.html', values=stats, labels=labels, legend=legend)
 
-@app.route('/geomap')
-def get_map():
-    geo_map()
-    return render_template('geomap.html')
-'''
+@app.route('/sources')
+def get_source():
+    tweet_df = pd.read_csv('tweets_df.csv')
+    all_sources = tweet_df.source.tolist()
+    legend = 'Top Sources'
+    labels = list(set(all_sources))
+    data = []
+    for x in labels:
+        data.append(all_sources.count(x))
+    return render_template('source.html', values=data, labels=labels, legend=legend)
+
 @app.route('/wordmap')
 def get_wordmap():
     tweet_df = pd.read_csv('tweets_df.csv')
     nlp_list = tweet_df.text.tolist()
     word_cloud(nlp_list)
     return render_template('wordmap.html')
-'''
+
+@app.route('/geomap')
+def get_map():
+    geo_map()
+    return render_template('geomap.html')
