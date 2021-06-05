@@ -8,7 +8,7 @@ from geopy.exc import GeocoderTimedOut
 from geopy.geocoders import Nominatim
 from google_trans_new import google_translator
 from os.path import join, dirname, realpath
-#from wordcloud import WordCloud,STOPWORDS
+from wordcloud import WordCloud,STOPWORDS
 from bert import evaluate
 import matplotlib.pyplot as plt
 from csv import writer
@@ -53,15 +53,8 @@ def convert_df(tweet_list):
     tweet_df["source"]= [tweet.source for tweet in tweet_list]
     tweet_df["len"]= [len(tweet.text) for tweet in tweet_list]
     tweet_df["likes"]= [tweet.favorite_count for tweet in tweet_list]
-    
-    translator = google_translator()
-    loc_list = [tweet.location for tweet in tweet_list]
-    for i in range(len(loc_list)):
-        loc_list[i] = translator.translate(loc_list,lang_tgt='en')
-    tweet_df["location"]= loc_list
-    tweet_df["coord"]= [tweet.coordinates for tweet in tweet_list]
-    
-    tweet_df.to_csv('tweets_df.csv',index=False)
+    tweet_df["location"]= [tweet.author.location for tweet in tweet_list]
+    tweet_df.to_csv('tweets_df.csv')
 
 def freq_words(str):
     str = str.split()		
@@ -71,35 +64,7 @@ def freq_words(str):
             str2.append(i)
     return str2
 
-def geo_map():
-    map = folium.Map(location=[0, 0], zoom_start=2)
-    data_df=pd.read_csv('tweets_df.csv')
-
-    data=pd.DataFrame()
-    data['likes'] = data_df.likes
-    data['location'] = data_df.location
-    #tweet_df = tweet_df.drop(['id','len','likes'],axis=1)
-    #data=data.drop(['id','text','retweet_count','date','source','len','coord'],axis=1)
-    print(data)
-    geo_locator = Nominatim(user_agent="LearnPython")
-
-    print(data.size)
-    for i in range(data.size//2):
-        
-        #like = str(data['likes'][i])
-        location = str(data['location'][i])
-
-        if location:
-            try:
-                location = geo_locator.geocode(location)
-            except GeocoderTimedOut:
-                continue
-            if location:
-                folium.Marker([location.latitude, location.longitude],popup=location).add_to(map)
-    map.save("./templates/geomap.html")
-    
-
-def word_cloud(list):   ##! Problem
+def word_cloud(list):
     val = ''
     for x in list:
         val += (x)
@@ -126,5 +91,22 @@ def add_sentiment(tweets):
     stats,sentiments = evaluate(tweets)
     return stats
 
-def geolocation(tweet_df):
-    pass
+def geo_map():
+    map = folium.Map(location=[0, 0], zoom_start=2)
+    data_df=pd.read_csv('tweets_df.csv')
+
+    data=pd.DataFrame()
+    data['location'] = data_df.location
+    
+    geo_locator = Nominatim(user_agent="LearnPython")
+    for i in range(data.size//2):
+        location = str(data['location'][i])
+
+        if location:
+            try:
+                location = geo_locator.geocode(location)
+            except GeocoderTimedOut:
+                continue
+            if location:
+                folium.Marker([location.latitude, location.longitude],popup=location).add_to(map)
+    map.save("./templates/geomap.html")
