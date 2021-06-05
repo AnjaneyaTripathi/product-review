@@ -17,6 +17,18 @@ In addition to the review classification, we have also added functionalities suc
  <li>Stats on the Top twitter usage Platforms</li>
 </ol>
  
+# Installation
+To run the flask app in a  windows environment
+
+ 1. Install python 3.8
+ 2. Run ```pip install virtualenv```
+ 3. Run ```mkdir project``` to create project directory
+ 4. Run ```cd project``` to move to the project directory
+ 5. Run ```virtualenv venv``` to create a virtual environment
+ 6. Run ```.\Scripts\activate```  to activate the virtual environment
+ 7. Install the required dependencies
+ 8. Copy the contents of the Flask app folder to your virtual environment and use command ```python app.py``` to run the app.  
+
 ### Output
 
 https://user-images.githubusercontent.com/68152189/120896833-d80efe80-c640-11eb-9b0f-021009a3fec5.mp4
