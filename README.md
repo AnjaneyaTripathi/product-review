@@ -17,7 +17,7 @@ In addition to the review classification, we have also added functionalities suc
  <li>Stats on the Top twitter usage Platforms</li>
 </ol>
  
-# Installation
+### Installation
 To run the flask app in a  windows environment
 
  1. Install python 3.8
