@@ -8,7 +8,7 @@ from geopy.exc import GeocoderTimedOut
 from geopy.geocoders import Nominatim
 from google_trans_new import google_translator
 from os.path import join, dirname, realpath
-#from wordcloud import WordCloud,STOPWORDS
+from wordcloud import WordCloud,STOPWORDS
 from bert import evaluate
 import matplotlib.pyplot as plt
 from csv import writer
@@ -108,8 +108,9 @@ def word_cloud(list):   ##! Problem
     tokens = val.split()
     for i in range(len(tokens)):
         tokens[i] = tokens[i].lower()
-    comment_words += " ".join(tokens)+" "
-    s = freq_words(comment_words)
+        # add list of unwanted words in this array
+        if(tokens[i] not in ['http', 'https']):
+            comment_words += tokens[i] + " "
     wordcloud = WordCloud(width = 800, height = 800,
                     stopwords = stopwords,
                     min_font_size = 10).generate(comment_words)
