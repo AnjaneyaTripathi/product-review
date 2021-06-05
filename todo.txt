@@ -1,5 +1,0 @@
-1. Retweets
-2. Word Map
-3. Location
-4. Date Vs Sentiment
-5. Overall Sentiment

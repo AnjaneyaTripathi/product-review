@@ -1,8 +1,13 @@
 from transformers import AutoModelForSequenceClassification
+from transformers import TFAutoModelForSequenceClassification
 from transformers import AutoTokenizer
 import numpy as np
 from scipy.special import softmax
+import csv
+import urllib.request
+from transformers import AutoModel, BertTokenizerFast
 import shutil
+
 
 def load_model():
     task='sentiment'
@@ -26,7 +31,8 @@ def preprocess(text):
     return " ".join(new_text)
 
 def evaluate(text):
-    result = [0, 0, 0]
+    result = [0,0,0]
+    sentiments = []
     tokenizer, model = load_model()
     for i in range(len(text)):
         text[i] = preprocess(text[i])
@@ -36,7 +42,9 @@ def evaluate(text):
         scores = softmax(scores)
         res = np.argmax(scores)
         print(res)
+        sentiments.append(res)
         result[res] += 1
         print(scores)
     print(result)
-    return result
+    return result,sentiments
+
